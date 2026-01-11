@@ -1,4 +1,4 @@
-import "./Pagination.css";
+import "./pagination.css";
 
 function Pagination({ currentPage, totalPages, onPageChange }) {
     if (totalPages <= 1) return null;
