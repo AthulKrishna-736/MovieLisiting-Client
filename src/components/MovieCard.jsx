@@ -1,4 +1,4 @@
-import "./MovieCard.css";
+import "./movieCard.css";
 
 function MovieCard({ movie, isFavorite, onToggleFavorite }) {
     return (
