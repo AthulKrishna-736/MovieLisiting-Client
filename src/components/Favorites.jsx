@@ -1,4 +1,4 @@
-import "./favoritesList.css";
+import "./favoriteslist.css";
 
 function FavoritesList({ favorites, onRemoveFavorite }) {
     if (!favorites || favorites.length === 0) {
