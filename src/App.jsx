@@ -26,12 +26,12 @@ export const App = () => {
       const fetchData = async () => {
         setLoading(true);
         try {
-          const res = await fetch(
-            `${CONFIGS.SERVER_URL}/search?query=${query}&page=${page}&limit=${limit}`
-          );
+          const res = await fetch(`${CONFIGS.SERVER_URL}/api/movies/search?query=${query}&page=${page}&limit=${limit}`);
           const data = await res.json();
+
           setMovies(data?.data?.Search || []);
           setTotalPages(Math.ceil((data?.data?.totalResults || limit) / limit));
+
         } catch (error) {
           console.error(error);
         } finally {
@@ -47,8 +47,9 @@ export const App = () => {
   useEffect(() => {
     const fetchFavorites = async () => {
       try {
-        const res = await fetch(`${CONFIGS.SERVER_URL}/favorites`);
+        const res = await fetch(`${CONFIGS.SERVER_URL}/api/movies/favorites`);
         const data = await res.json();
+
         setFavorites(data.data || []);
       } catch (error) {
         console.error("Failed to fetch favorites", error);
@@ -59,14 +60,15 @@ export const App = () => {
 
   const toggleFavorite = async (movie) => {
     try {
-      await fetch(`${CONFIGS.SERVER_URL}/favorites`, {
+      await fetch(`${CONFIGS.SERVER_URL}/api/movies/favorites`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(movie),
       });
 
-      const res = await fetch(`${CONFIGS.SERVER_URL}/favorites`);
+      const res = await fetch(`${CONFIGS.SERVER_URL}/api/movies/favorites`);
       const data = await res.json();
+
       setFavorites(data.data || []);
     } catch (error) {
       console.error("Failed to update favorites", error);
