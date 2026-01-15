@@ -1,30 +1,35 @@
-import "./pagination.css";
+import { PaginationProps } from "../types/favorites.types";
 
-function Pagination({ currentPage, totalPages, onPageChange }) {
+const Pagination: React.FC<PaginationProps> = ({ currentPage, totalPages, onPageChange }) => {
     if (totalPages <= 1) return null;
 
-    const createPages = () => {
-        const pages = [];
+    const createPages = (): Array<number | "..."> => {
+        const pages: Array<number | "..."> = [];
         const delta = 2;
-        const range = [];
+        const range: number[] = [];
 
         for (let i = 1; i <= totalPages; i++) {
-            if (i === 1 || i === totalPages || (i >= currentPage - delta && i <= currentPage + delta)) {
+            if (
+                i === 1 ||
+                i === totalPages ||
+                (i >= currentPage - delta && i <= currentPage + delta)
+            ) {
                 range.push(i);
             }
         }
 
-        let l;
-        for (let i of range) {
-            if (l) {
-                if (i - l === 2) {
-                    pages.push(l + 1);
-                } else if (i - l > 2) {
+        let last: number | undefined;
+
+        for (const i of range) {
+            if (last !== undefined) {
+                if (i - last === 2) {
+                    pages.push(last + 1);
+                } else if (i - last > 2) {
                     pages.push("...");
                 }
             }
             pages.push(i);
-            l = i;
+            last = i;
         }
 
         return pages;
@@ -33,9 +38,8 @@ function Pagination({ currentPage, totalPages, onPageChange }) {
     const pages = createPages();
 
     return (
-        <div className="pagination">
+        <div>
             <button
-                className="page-btn"
                 disabled={currentPage === 1}
                 onClick={() => onPageChange(currentPage - 1)}
             >
@@ -44,13 +48,12 @@ function Pagination({ currentPage, totalPages, onPageChange }) {
 
             {pages.map((page, idx) =>
                 page === "..." ? (
-                    <span key={idx} className="dots">
+                    <span key={`dots-${idx}`} >
                         ...
                     </span>
                 ) : (
                     <button
-                        key={idx}
-                        className={`page-btn ${currentPage === page ? "active" : ""}`}
+                        key={`page-${page}`}
                         onClick={() => onPageChange(page)}
                     >
                         {page}
@@ -59,7 +62,6 @@ function Pagination({ currentPage, totalPages, onPageChange }) {
             )}
 
             <button
-                className="page-btn"
                 disabled={currentPage === totalPages}
                 onClick={() => onPageChange(currentPage + 1)}
             >
@@ -67,6 +69,6 @@ function Pagination({ currentPage, totalPages, onPageChange }) {
             </button>
         </div>
     );
-}
+};
 
 export default Pagination;
