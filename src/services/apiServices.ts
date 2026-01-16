@@ -24,7 +24,7 @@ export const searchMovies = async (
 
 export const getFavorites = async (): Promise<TApiResponse<IMovie[], null> | undefined> => {
     try {
-        const response = await axiosInstance.get(`${APIS.favorite}`);
+        const response = await axiosInstance.get(`${APIS.favorites}`);
         return response.data;
     } catch (error) {
         console.log('Error: ', error);
@@ -33,7 +33,7 @@ export const getFavorites = async (): Promise<TApiResponse<IMovie[], null> | und
 
 export const toggleFavorite = async (data: IMovie): Promise<TApiResponse<IMovie[], null> | undefined> => {
     try {
-        const response = await axiosInstance.post(`${APIS.favorite}`, data);
+        const response = await axiosInstance.post(`${APIS.favorites}`, data);
         return response.data;
     } catch (error) {
         console.log('Error: ', error);
