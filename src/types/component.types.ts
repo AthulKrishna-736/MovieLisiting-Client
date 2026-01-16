@@ -38,6 +38,12 @@ export interface IMovieListingPageProps {
 }
 
 export interface IFavoritesListPageProps {
-    movies: IMovie[],
+    movies: IMovie[];
     onRemoveFavorite: (movie: IMovie) => void;
+    loading: boolean;
+}
+
+export interface ICustomMessageProps {
+    title: string;
+    description: string;
 }
