@@ -1,5 +1,3 @@
-
-
 export const CONFIGS = {
-    SERVER_URL: import.meta.env.VITE_SERVER_URL,
+    SERVER_URL: import.meta.env.VITE_SERVER_URL as string,
 }
