@@ -22,7 +22,7 @@ const MovieListingPage: React.FC<IMovieListingPageProps> = ({ query, setQuery, m
                 </div>
             ) : (
                 <div>
-                    <div>
+                    <div className='grid grid-cols-5 gap-6'>
                         {movies.map((movie) => (
                             <MovieCard
                                 movie={movie}
@@ -33,13 +33,11 @@ const MovieListingPage: React.FC<IMovieListingPageProps> = ({ query, setQuery, m
                     </div>
 
                     <div>
-                        {movies && movies.length > 0 && (
-                            <Pagination
-                                currentPage={page}
-                                totalPages={total}
-                                onPageChange={setPage}
-                            />
-                        )}
+                        <Pagination
+                            currentPage={page}
+                            totalPages={total}
+                            onPageChange={setPage}
+                        />
                     </div>
                 </div>
             )}

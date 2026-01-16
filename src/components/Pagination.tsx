@@ -1,4 +1,5 @@
-import { PaginationProps } from "../types/favorites.types";
+import React from "react";
+import { PaginationProps } from "../types/component.types";
 
 const Pagination: React.FC<PaginationProps> = ({ currentPage, totalPages, onPageChange }) => {
     if (totalPages <= 1) return null;
@@ -38,23 +39,28 @@ const Pagination: React.FC<PaginationProps> = ({ currentPage, totalPages, onPage
     const pages = createPages();
 
     return (
-        <div>
+        <div className="flex bg-white p-4 rounded-md items-center justify-center gap-1 mt-6">
             <button
                 disabled={currentPage === 1}
                 onClick={() => onPageChange(currentPage - 1)}
+                className="px-3 py-1 text-sm border rounded disabled:opacity-40 cursor-pointer"
             >
                 Prev
             </button>
 
             {pages.map((page, idx) =>
                 page === "..." ? (
-                    <span key={`dots-${idx}`} >
+                    <span
+                        key={`dots-${idx}`}
+                        className="px-2 text-sm text-neutral-500"
+                    >
                         ...
                     </span>
                 ) : (
                     <button
                         key={`page-${page}`}
                         onClick={() => onPageChange(page)}
+                        className={`px-3 py-1 text-sm border rounded cursor-pointer ${page === currentPage ? "bg-black text-white border-black" : "hover:bg-neutral-100"}`}
                     >
                         {page}
                     </button>
@@ -64,6 +70,7 @@ const Pagination: React.FC<PaginationProps> = ({ currentPage, totalPages, onPage
             <button
                 disabled={currentPage === totalPages}
                 onClick={() => onPageChange(currentPage + 1)}
+                className="px-3 py-1 text-sm border rounded disabled:opacity-40 cursor-pointer"
             >
                 Next
             </button>

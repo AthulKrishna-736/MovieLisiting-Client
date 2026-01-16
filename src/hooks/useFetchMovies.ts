@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react"
 import { IMovie } from "../types/component.types";
 import { searchMovies } from "../services/apiServices";
-import { toast } from "sonner";
 import { CUSTOM_TOAST } from "../utils/customToast";
 
 
@@ -44,7 +43,7 @@ export const useFetchMovies = (search: string, page: number, limit: number): { m
             controller.abort();
         }
 
-    }, [search]);
+    }, [search, page, limit]);
 
     return {
         movies,
