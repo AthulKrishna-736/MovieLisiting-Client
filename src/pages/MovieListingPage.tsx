@@ -3,9 +3,8 @@ import Pagination from '../components/Pagination'
 import { IMovieListingPageProps } from '../types/component.types'
 import MovieCard from '../components/MovieCard';
 
-const MovieListingPage: React.FC<IMovieListingPageProps> = ({ query, setQuery, movies, loading, page, setPage, total, toggleFavorite, }) => {
-
-    const isFavorite = (id: string) => movies.some((fav) => fav.imdbID === id);
+const MovieListingPage: React.FC<IMovieListingPageProps> = ({ movies, favorites, loading, page, setPage, total, toggleFavorite }) => {
+    const totalPages = Math.floor(total / 10);
 
     return (
         <div>
@@ -22,20 +21,24 @@ const MovieListingPage: React.FC<IMovieListingPageProps> = ({ query, setQuery, m
                 </div>
             ) : (
                 <div>
-                    <div className='grid grid-cols-5 gap-6'>
-                        {movies.map((movie) => (
-                            <MovieCard
-                                movie={movie}
-                                isFavorite={isFavorite(movie.imdbID)}
-                                onAction={toggleFavorite}
-                            />
-                        ))}
+                    <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4'>
+                        {movies.map((movie) => {
+                            const isFavorite = favorites.some((f) => f.imdbID == movie.imdbID);
+                            return (
+                                <MovieCard
+                                    movie={movie}
+                                    isFavorite={isFavorite}
+                                    onAction={toggleFavorite}
+                                />
+                            )
+                        })
+                        }
                     </div>
 
                     <div>
                         <Pagination
                             currentPage={page}
-                            totalPages={total}
+                            totalPages={totalPages}
                             onPageChange={setPage}
                         />
                     </div>

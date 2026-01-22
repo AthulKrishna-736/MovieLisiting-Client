@@ -2,31 +2,27 @@ import { ChangeEvent, useState } from "react";
 import { Toaster } from "sonner";
 import { useFetchMovies } from "./hooks/useFetchMovies";
 import { useDebounce } from "./utils/debounceSearch";
-import { IMovie } from "./types/component.types";
+import { CUSTOM_TOAST } from "./utils/customToast";
+import { useFetchFavorites, useToggleFavorite } from "./hooks/usefavorites";
 import MovieListingPage from "./pages/MovieListingPage";
 import Footer from "./components/Footer";
-import FavoritesListingPage from "./pages/FavoritesListingPage";
-import { useFetchFavorites, useToggleFavorite } from "./hooks/usefavorites";
 import CustomMessage from "./components/CustomMessage";
-import { CUSTOM_TOAST } from "./utils/customToast";
+import FavoritesListingPage from "./pages/FavoritesListingPage";
+import { IMovie } from "./types/component.types";
 
 export const App = () => {
   const [page, setPage] = useState(1);
   const [query, setQuery] = useState("");
   const [activeTab, setActiveTab] = useState("search");
+  const [favorites, setFavorites] = useState<IMovie[]>([]);
 
   const LIMIT = 10;
   const DELAY_MS = 1000;
 
   const debouncedQuery = useDebounce(query.trim(), DELAY_MS);
   const { movies, loading, total } = useFetchMovies(debouncedQuery, page, LIMIT);
-  const { favorites, loading: favoriteLoading, refetchFavorites } = useFetchFavorites();
-  const { toggleFavorite } = useToggleFavorite();
-
-  const handleToggleFavorite = async (movie: IMovie) => {
-    await toggleFavorite(movie);
-    refetchFavorites();
-  };
+  const { loading: favoriteLoading } = useFetchFavorites(setFavorites);
+  const { toggleFavorite } = useToggleFavorite(setFavorites);
 
   const handleInputValidate = (e: ChangeEvent<HTMLInputElement>) => {
     const val = e.target.value;
@@ -70,14 +66,13 @@ export const App = () => {
             {movies && movies.length > 0 ? (
               <div className="bg-gray-200 w-full h-full rounded-md p-4 flex justify-center">
                 <MovieListingPage
-                  query={query}
-                  setQuery={setQuery}
                   page={page}
                   setPage={setPage}
+                  favorites={favorites ?? []}
                   loading={loading}
                   movies={movies}
                   total={total}
-                  toggleFavorite={handleToggleFavorite}
+                  toggleFavorite={toggleFavorite}
                 />
               </div>
             ) : (
@@ -93,7 +88,7 @@ export const App = () => {
               <FavoritesListingPage
                 movies={favorites}
                 loading={favoriteLoading}
-                onRemoveFavorite={handleToggleFavorite}
+                onRemoveFavorite={toggleFavorite}
               />
             ) : (
               <CustomMessage title="No movies found" description="Try search and mark movies as favorite" />
