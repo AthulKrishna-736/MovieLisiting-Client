@@ -27,9 +27,8 @@ export interface PaginationProps {
 }
 
 export interface IMovieListingPageProps {
-    query: string;
-    setQuery: React.Dispatch<SetStateAction<string>>;
     movies: IMovie[];
+    favorites: IMovie[] | [];
     page: number;
     setPage: React.Dispatch<SetStateAction<number>>
     total: number;
