@@ -7,5 +7,6 @@ export const axiosInstance = axios.create({
         'Content-Type': 'application/json'
     },
     responseType: 'json',
+    withCredentials: true,
 });
 
